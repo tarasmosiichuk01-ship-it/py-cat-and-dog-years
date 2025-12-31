@@ -40,5 +40,33 @@ import pytest
     ]
 
 )
-def test_get_human_age(cat_age, dog_age, expected):
+def test_get_human_age(cat_age: int, dog_age: int, expected: list) -> None:
     assert get_human_age(cat_age, dog_age) == expected
+
+
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        (-1, 5),
+        (5, -1),
+        (-5, -10)
+    ]
+)
+def test_negative_ages_raise_value_error(cat_age: int, dog_age: int) -> None:
+    with pytest.raises(ValueError):
+        get_human_age(cat_age, dog_age)
+
+
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        (10, "5"),
+        ("5", 10),
+        ("10", "10"),
+        (5.5, 10),
+        (10, 10.55)
+    ]
+)
+def test_positive_ages_raise_type_error(cat_age: int, dog_age: int) -> None:
+    with pytest.raises(TypeError):
+        get_human_age(cat_age, dog_age)
